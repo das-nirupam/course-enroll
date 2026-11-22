@@ -1,5 +1,27 @@
-plugins { id 'java' }
+plugins {
+    id 'java'
+    id 'application'
+}
 repositories { mavenCentral() }
 dependencies { testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2' }
 test { useJUnitPlatform() }
-java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+application {
+    mainClass = 'com.coursewaitlist.cli.CourseRegistrationCli'
+}
+
+tasks.named('run', JavaExec) {
+    standardInput = System.in
+}
+
+tasks.named('jar') {
+    archiveFileName = 'course-waitlist.jar'
+    manifest {
+        attributes('Main-Class': application.mainClass.get())
+    }
+}
